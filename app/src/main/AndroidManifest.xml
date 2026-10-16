@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <permission android:name="com.percy.silentxp.CONTROL" android:protectionLevel="signature" />
+    <uses-permission android:name="com.percy.silentxp.CONTROL" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- The whitelist editor intentionally lists every installed app, including background-only apps. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
+    <application android:theme="@android:style/Theme.Material.Light.NoActionBar" android:label="白名单静音" android:icon="@drawable/ic_shield" android:allowBackup="false" android:dataExtractionRules="@xml/backup_rules" android:supportsRtl="true">
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription" android:value="系统音频和震动屏蔽，电话短信与应用白名单" />
+        <meta-data android:name="xposedminversion" android:value="93" />
+        <meta-data android:name="xposedscope" android:resource="@array/xposed_scope" />
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+        </activity>
+        <!-- call() checks the Binder UID; only system_server and this app can read configuration. -->
+        <provider android:name=".ConfigProvider" android:authorities="com.percy.silentxp.config" android:exported="true" android:directBootAware="true" tools:ignore="ExportedContentProvider" />
+        <service android:name=".SilentTile" android:label="白名单静音" android:icon="@drawable/ic_shield" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:exported="true">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true" />
+        </service>
+    </application>
+</manifest>
